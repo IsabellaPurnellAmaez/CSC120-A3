@@ -1,3 +1,4 @@
+import java.util.Scanner;
 
 class Conversation implements Chatbot {
 
@@ -8,6 +9,7 @@ class Conversation implements Chatbot {
    */
   Conversation() {
     
+
   }
 
   /**
@@ -15,6 +17,20 @@ class Conversation implements Chatbot {
    */
   public void chat() {
 
+    //first get the number of rounds
+    
+    System.out.println("How many rounds do you want to play?");
+    Scanner input = new Scanner(System.in);
+    int numOfRounds = input.nextInt();
+    input.close();
+    System.out.println(numOfRounds);
+
+    for(int i=1;i<=numOfRounds;i++){
+      System.out.println("next line");
+      String nextConvoPiece = input.nextLine();
+      respond(nextConvoPiece);
+      input.close();
+    }
   }
 
   /**
@@ -29,7 +45,8 @@ class Conversation implements Chatbot {
    * @param inputString the users last line of input
    * @return mirrored or canned response to user input  
    */
-  public String respond(String inputString) {
+  
+   public String respond(String inputString) {
     String returnString = ""; 
     return returnString; 
   }
