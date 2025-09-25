@@ -1,4 +1,7 @@
 import java.util.Scanner;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.Random;
 
 class Conversation implements Chatbot {
 
@@ -20,17 +23,27 @@ class Conversation implements Chatbot {
     //first get the number of rounds
     
     System.out.println("How many rounds do you want to play?");
-    Scanner input = new Scanner(System.in);
-    int numOfRounds = input.nextInt();
-    input.close();
+    
+    Scanner inputNum = new Scanner(System.in);
+    int numOfRounds = inputNum.nextInt();
     System.out.println(numOfRounds);
 
+    System.out.println("What's up?");
+    Scanner getNextLine = new Scanner(System.in);
+
+
     for(int i=1;i<=numOfRounds;i++){
-      System.out.println("next line");
-      String nextConvoPiece = input.nextLine();
-      respond(nextConvoPiece);
-      input.close();
+      String nextLine = getNextLine.nextLine();
+      System.out.println(nextLine);
+     
+    
+  
     }
+    
+    inputNum.close();
+    getNextLine.close();
+
+    
   }
 
   /**
@@ -40,6 +53,8 @@ class Conversation implements Chatbot {
 
   }
 
+  
+
   /**
    * Gives appropriate response (mirrored or canned) to user input
    * @param inputString the users last line of input
@@ -47,7 +62,31 @@ class Conversation implements Chatbot {
    */
   
    public String respond(String inputString) {
-    String returnString = ""; 
+    Dictionary<String, String> wordSwitches = new Hashtable<>();
+    wordSwitches.put("I", "you");
+    wordSwitches.put("me", "you");
+    wordSwitches.put("am", "are");
+    wordSwitches.put("you", "I");
+    wordSwitches.put("my", "your");
+    wordSwitches.put("your", "my");
+
+
+    wordSwitches.put("yours", "mine");
+    wordSwitches.put("mine", "yours");
+    wordSwitches.put("myself", "yourself");
+    wordSwitches.put("yourself", "myself");
+
+    String[] inputStringParts = inputString.split(" ");
+
+    for (int i = 0; i < inputStringParts.length; i++) {
+      
+      }
+    }
+
+    
+
+
+    String returnString = "[,\\s]+"; 
     return returnString; 
   }
 
@@ -55,7 +94,5 @@ class Conversation implements Chatbot {
 
     Conversation myConversation = new Conversation();
     myConversation.chat();
-    myConversation.printTranscript();
-
   }
 }
