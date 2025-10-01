@@ -1,18 +1,19 @@
-import java.util.Scanner;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
+
 
 class Conversation implements Chatbot {
 
-  // Attributes 
-
+  // Attributes
+    List<String> transcript; 
   /**
-   * Constructor 
+   * Constructor
    */
   Conversation() {
-    
-
+    this.transcript = new ArrayList<>();
   }
 
   /**
@@ -20,40 +21,45 @@ class Conversation implements Chatbot {
    */
   public void chat() {
 
-    //first get the number of rounds
-    
+    // first, ask how many rounds they want to play
+
     System.out.println("How many rounds do you want to play?");
-    
-    Scanner inputNum = new Scanner(System.in);
-    int numOfRounds = inputNum.nextInt();
-    System.out.println(numOfRounds);
+    Scanner input = new Scanner(System.in);
+    int numOfRounds = input.nextInt();
+    input.nextLine();
 
+
+    //start conversationn
     System.out.println("What's up?");
-    Scanner getNextLine = new Scanner(System.in);
+    this.transcript.add("What's up?");
 
-
-    for(int i=1;i<=numOfRounds;i++){
-      String nextLine = getNextLine.nextLine();
-      System.out.println(nextLine);
-     
-    
-  
+    //hold conversation (get response from response method and then ask for next input for determined number of rounds)
+    for (int i = 1; i <= numOfRounds; i++) {
+      String nextLine = input.nextLine();
+      this.transcript.add(nextLine);
+      String Response = respond(nextLine);
+      this.transcript.add(Response);
+      System.out.println(Response);
     }
-    
-    inputNum.close();
-    getNextLine.close();
 
-    
+    input.close();
+    //saay goodbye!
+    System.out.println("Ok, goodbye!");
+    this.transcript.add("Ok, goodbye!");
+    printTranscript();
+
   }
 
   /**
    * Prints transcript of conversation
    */
   public void printTranscript() {
-
+    //print transcript out line by line
+    System.out.println("TRANSCRIPT:");
+    for (int i = 0; i < this.transcript.size(); i++){
+      System.out.println(this.transcript.get(i));
+}
   }
-
-  
 
   /**
    * Gives appropriate response (mirrored or canned) to user input
@@ -62,37 +68,55 @@ class Conversation implements Chatbot {
    */
   
    public String respond(String inputString) {
-    Dictionary<String, String> wordSwitches = new Hashtable<>();
+    HashMap<String, String> wordSwitches = new HashMap<>();
+    //words to switch
     wordSwitches.put("I", "you");
     wordSwitches.put("me", "you");
     wordSwitches.put("am", "are");
     wordSwitches.put("you", "I");
     wordSwitches.put("my", "your");
     wordSwitches.put("your", "my");
-
-
+    wordSwitches.put("are", "am");
     wordSwitches.put("yours", "mine");
     wordSwitches.put("mine", "yours");
     wordSwitches.put("myself", "yourself");
     wordSwitches.put("yourself", "myself");
 
-    String[] inputStringParts = inputString.split(" ");
+    //make a copy of the input that doesn't get changed
+    String inputStringCopy = inputString;
+    String[] inputStringParts = inputString.split(" "); /
 
+    //check if any words should be switched
+    String finalsentence = "";
     for (int i = 0; i < inputStringParts.length; i++) {
-      
-      }
+      if(wordSwitches.containsKey(inputStringParts[i])){
+        inputStringParts[i] = wordSwitches.get(inputStringParts[i]);
+      }    
+      //string words back together
+      finalsentence = finalsentence + inputStringParts[i] + " ";
+    }
+    //list of canne responses
+    String[] cannedResponses = {"Wow!", "Say more?", "That's very interesting.", "I want to talk about something else please."};
+
+    //if the sentence had no words switched, send a canned response
+    if(finalsentence.equals(inputStringCopy + " ")){
+      int cannedResponsesLength = cannedResponses.length;
+      Random random = new Random();
+      int bound = cannedResponsesLength; 
+      int randomNumber = random.nextInt(bound);
+      return cannedResponses[randomNumber];
     }
 
-    
+    //return a response sentence
+    return finalsentence; 
+    }
 
-
-    String returnString = "[,\\s]+"; 
-    return returnString; 
+    /**
+     * Main method to start the conversation
+     */
+    public static void main(String[] args) {
+      Conversation myConversation = new Conversation();
+      myConversation.chat();
+    }
   }
 
-  public static void main(String[] arguments) {
-
-    Conversation myConversation = new Conversation();
-    myConversation.chat();
-  }
-}
