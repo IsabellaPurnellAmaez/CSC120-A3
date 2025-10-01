@@ -84,7 +84,7 @@ class Conversation implements Chatbot {
 
     //make a copy of the input that doesn't get changed
     String inputStringCopy = inputString;
-    String[] inputStringParts = inputString.split(" "); /
+    String[] inputStringParts = inputString.split(" "); 
 
     //check if any words should be switched
     String finalsentence = "";
